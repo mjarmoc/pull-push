@@ -2,12 +2,12 @@
 
 <img src="readme/pull-push-transparent.png" width="400px">
 
-# PullPush
+# Pull-Push
 
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/mjarmoc/nx-s3-server?style=flat)
 ![GitHub forks](https://img.shields.io/github/forks/mjarmoc/nx-s3-server?style=flat)
 
-Pull Push is a small application helping you to move files across different Storages.<br/>
+Pull-Push is a small application helping you to move files across different Storages.<br/>
 Under the hood it utilize parallel multipart upload/download to move things fast.
 
 </div>
