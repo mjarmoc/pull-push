@@ -7,7 +7,7 @@
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/mjarmoc/nx-s3-server?style=flat)
 ![GitHub forks](https://img.shields.io/github/forks/mjarmoc/nx-s3-server?style=flat)
 
-Pull Push is a small application helping you to move files across different Storages.
+Pull Push is a small application helping you to move files across different Storages.<br/>
 Under the hood it utilize parallel multipart upload/download to move things fast.
 
 </div>
@@ -24,10 +24,24 @@ Under the hood it utilize parallel multipart upload/download to move things fast
 ## Installation
 
 ```sh
-go mod download
+go install
+```
+
+## Usage
+
+Command flags are not stable at the moment and will change.
+
+Http -> S3
+
+```sh
+pull-push -u <file-url> -b <bucket-name> -f <file-path>
 ```
 
 ## Local Development
+
+```sh
+go mod download
+```
 
 With localstack:
 
