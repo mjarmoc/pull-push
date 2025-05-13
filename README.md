@@ -4,8 +4,10 @@
 
 # Pull-Push
 
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/mjarmoc/nx-s3-server?style=flat)
-![GitHub forks](https://img.shields.io/github/forks/mjarmoc/nx-s3-server?style=flat)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/mjarmoc/pull-push?style=flat)
+![GitHub releases](https://img.shields.io/github/release-date/mjarmoc/pull-push?style=flat)
+![GitHub forks](https://img.shields.io/github/forks/mjarmoc/pull-push?style=flat)
+![GitHub downloads](https://img.shields.io/github/downloads/mjarmoc/pull-push/total?style=flat)
 
 Pull-Push is a small application helping you to move files across different Storages.<br/>
 Under the hood it utilize parallel multipart upload/download to move things fast.
@@ -17,9 +19,12 @@ Under the hood it utilize parallel multipart upload/download to move things fast
 - [x] Http => S3
 - [ ] Http => GPC Storage
 - [ ] Http => Azure Storage
-- [ ] Azure Storage <=> GPC Storage
-- [ ] S3 <=> Azure Storage
-- [ ] S3 <=> GPC Storage
+- [ ] Azure Storage => GCP Storage
+- [ ] Azure Storage => S3
+- [ ] S3 => Azure Storage
+- [ ] S3 => GCP Storage
+- [ ] GCP Storage => S3 [in progress]
+- [ ] GCP Storage => Azure Storage
 
 ## Installation
 
