@@ -10,19 +10,19 @@ import (
 )
 
 type Puller struct {
-	client http.Client
-	url string
+	client      http.Client
+	url         string
 	chunkNumber int16
-	chunkSize int64
+	chunkSize   int64
 }
 
-func New() (*Puller) {
+func NewPuller() *Puller {
 	client := http.Client{}
 	return &Puller{client: client}
 }
 
-func (p *Puller) Pull(ctx context.Context, url string) int{
-	head, err:= p.client.Head(url)
+func (p *Puller) Pull(ctx context.Context, url string) int {
+	head, err := p.client.Head(url)
 	if err != nil {
 
 	}
@@ -33,7 +33,7 @@ func (p *Puller) Pull(ctx context.Context, url string) int{
 	return int(p.chunkNumber)
 }
 
-func(p *Puller) PullChunk(ctx context.Context, chunk int) (*[]byte) {
+func (p *Puller) PullChunk(ctx context.Context, chunk int) *[]byte {
 	request, err := http.NewRequest("GET", p.url, nil)
 	if err != nil {
 
@@ -49,7 +49,7 @@ func(p *Puller) PullChunk(ctx context.Context, chunk int) (*[]byte) {
 	}
 
 	part, err3 := io.ReadAll(response.Body)
-	if err3 !=nil {
+	if err3 != nil {
 
 	}
 	fmt.Printf("Completed downloading chunk %d\n", chunk)

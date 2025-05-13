@@ -18,12 +18,12 @@ Under the hood it utilize parallel multipart upload/download to move things fast
 
 - [x] Http => S3
 - [ ] Http => GPC Storage
-- [ ] Http => Azure Storage
+- [ ] Http => Azure Storage (in progress)
 - [ ] Azure Storage => GCP Storage
 - [ ] Azure Storage => S3
 - [ ] S3 => Azure Storage
 - [ ] S3 => GCP Storage
-- [ ] GCP Storage => S3 [in progress]
+- [x] GCP Storage => S3
 - [ ] GCP Storage => Azure Storage
 
 ## Installation
@@ -34,12 +34,16 @@ go install
 
 ## Usage
 
-Command flags are not stable at the moment and will change.
-
-Http -> S3
+Http -> \*
 
 ```sh
-pull-push -u <file-url> -b <bucket-name> -f <file-path>
+pull-push --pull <file-url> --to <bucket-name> --push <file-path>
+```
+
+Azure/GCP/S3 -> \*
+
+```sh
+pull-push --from <bucket-name> --pull <file-path> --to <bucket-name> --push <file-path>
 ```
 
 ## Local Development

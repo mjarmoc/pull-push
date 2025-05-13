@@ -12,42 +12,39 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(s3Cmd)
-	s3Cmd.Flags().StringVarP(&bucket, "bucket", "b", "", "S3 Bucket name")
-	s3Cmd.Flags().StringVarP(&url, "url", "u", "", "File url to download")
-	s3Cmd.Flags().StringVarP(&file, "file", "f", "", "File path to upload")
+	RootCmd.AddCommand(http2s3Cmd)
+	http2s3Cmd.Flags().StringVarP(&toBucket, "to", "t", "", "S3 Bucket name")
+	http2s3Cmd.Flags().StringVarP(&pullFile, "pull", "l", "", "File url to download")
+	http2s3Cmd.Flags().StringVarP(&pushFile, "push", "s", "", "File path to upload")
 }
 
-var bucket string
-var url string
-var file string
+var toBucket string
+var pullFile string
+var pushFile string
 
-var s3Cmd = &cobra.Command{
-  Use:   "s3",
-  Short: "Pull-Push to S3 Bucket",
-  Long:  ``,
-  Run: func(cmd *cobra.Command, args []string) {
-    fmt.Println("Pull-Push to S3 Bucket")
-	process(url, bucket, file)
-  },
+var http2s3Cmd = &cobra.Command{
+	Use:   "http2s3",
+	Short: "Pull From Http and Push to S3 Bucket",
+	Long:  ``,
+	Run: func(cmd *cobra.Command, args []string) {
+		process(pullFile, toBucket, pushFile)
+	},
 }
-
-
 
 func process(url string, bucket string, file string) {
 	fmt.Printf("Downloading file %s and uploading to S3 bucket %s with path %s", url, bucket, file)
 	ctx := context.Background()
-	start:= time.Now()
-	puller := http.New()
+	start := time.Now()
+	puller := http.NewPuller()
 	chunks := puller.Pull(ctx, url)
-	pusher := s3.New(ctx)
+	pusher := s3.NewPusher(ctx)
 	pusher.Push(ctx, bucket, file)
 	var wg sync.WaitGroup
-	for i:=0; i<chunks; i++ {
-		wg.Add(1);
+	for i := 0; i < chunks; i++ {
+		wg.Add(1)
 		go func() {
 			defer wg.Done()
-		 	bytes := puller.PullChunk(ctx, i)
+			bytes := puller.PullChunk(ctx, i)
 			pusher.PushChunk(ctx, i, bytes)
 		}()
 	}

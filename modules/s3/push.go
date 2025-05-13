@@ -14,14 +14,14 @@ import (
 )
 
 type Pusher struct {
-	client *s3.Client
-	bucket string
-	key string
+	client   *s3.Client
+	bucket   string
+	key      string
 	uploadId string
-	parts []types.CompletedPart
+	parts    []types.CompletedPart
 }
 
-func New(ctx context.Context) (*Pusher) {
+func NewPusher(ctx context.Context) *Pusher {
 	sdkConfig, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		fmt.Println(err)
@@ -49,11 +49,11 @@ func (p *Pusher) Push(ctx context.Context, bucket string, key string) {
 func (p *Pusher) PushChunk(ctx context.Context, chunk int, filePart *[]byte) {
 	fmt.Printf("Start pushing chunk %d\n", chunk)
 	part, err := p.client.UploadPart(ctx, &s3.UploadPartInput{
-		Bucket: aws.String(p.bucket), 
-		Key: aws.String(p.key), 
-		UploadId: aws.String(p.uploadId),
+		Bucket:     aws.String(p.bucket),
+		Key:        aws.String(p.key),
+		UploadId:   aws.String(p.uploadId),
 		PartNumber: aws.Int32(int32(chunk) + 1),
-		Body: bytes.NewReader(*filePart),
+		Body:       bytes.NewReader(*filePart),
 	})
 	if err != nil {
 		panic(err)
@@ -64,11 +64,11 @@ func (p *Pusher) PushChunk(ctx context.Context, chunk int, filePart *[]byte) {
 }
 
 func (p *Pusher) Complete(ctx context.Context) {
-	 slices.SortFunc(p.parts, func(a, b types.CompletedPart) int {return cmp.Compare(*a.PartNumber, *b.PartNumber)})
+	slices.SortFunc(p.parts, func(a, b types.CompletedPart) int { return cmp.Compare(*a.PartNumber, *b.PartNumber) })
 	_, err := p.client.CompleteMultipartUpload(ctx, &s3.CompleteMultipartUploadInput{
-		Bucket: aws.String(p.bucket), 
-		Key: aws.String(p.key), 
-		UploadId: aws.String(p.uploadId),
+		Bucket:          aws.String(p.bucket),
+		Key:             aws.String(p.key),
+		UploadId:        aws.String(p.uploadId),
 		MultipartUpload: &types.CompletedMultipartUpload{Parts: p.parts},
 	})
 	if err != nil {
